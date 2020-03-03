@@ -3,6 +3,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import static java.time.temporal.TemporalAdjusters.nextOrSame;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
+import static java.time.temporal.TemporalAdjusters.previous;
+import static java.time.temporal.TemporalAdjusters.next;
+
 import java.util.*;
 
 public class DeliveryOfficer {
@@ -19,8 +26,8 @@ public class DeliveryOfficer {
     /**
      * Constructor for objects of the class DeliveryOfficer.
      *
-     * @param email a String containing the email address of the officer.
-     * @param name a String containing a full name for the delivery officer.
+     * @param email          a String containing the email address of the officer.
+     * @param name           a String containing a full name for the delivery officer.
      * @param timeCommitment an int containing the percentage time commitment for the delivery officer.
      */
     public DeliveryOfficer(String name, String email, int timeCommitment, boolean adminPrivileges) {
@@ -145,12 +152,13 @@ public class DeliveryOfficer {
         }
         return listEvents;
     }
+
     /**
      * Gets all events currently assigned to the delivery officer after a specified date and returns
      * them in a list. If no dates are provided, start date is set to the startDate specified in Main class and an open
      * end date is set.
      *
-     * @param name String name of delivery officer.
+     * @param name      String name of delivery officer.
      * @param startDate String of start date in (dd/mm/yyyy) format.
      * @return an ArrayList of Event objects assigned to the delivery officer.
      * @throws ParseException if dates are incorrectly formatted.
@@ -166,12 +174,12 @@ public class DeliveryOfficer {
                 String officerName = deliveryOfficer.getName().toUpperCase();
                 if (officerName.equals(name.toUpperCase())) {
 
-                        if (firstSearchDate.compareTo(eventDateFormatted) <= 0) {
-                            listEvents.add(event);
-                        }
+                    if (firstSearchDate.compareTo(eventDateFormatted) <= 0) {
+                        listEvents.add(event);
                     }
                 }
             }
+        }
         return listEvents;
     }
 
@@ -180,9 +188,9 @@ public class DeliveryOfficer {
      * them in a list. If no dates are provided, start date is set to the startDate specified in Main class and an open
      * end date is set.
      *
-     * @param name String name of delivery officer.
+     * @param name      String name of delivery officer.
      * @param startDate String of start date in (dd/mm/yyyy) format.
-     * @param endDate String of end date in (dd/mm/yyyy) format.
+     * @param endDate   String of end date in (dd/mm/yyyy) format.
      * @return an ArrayList of Event objects assigned to the delivery officer.
      * @throws ParseException if dates are incorrectly formatted.
      */
@@ -197,20 +205,20 @@ public class DeliveryOfficer {
             for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
                 String officerName = deliveryOfficer.getName().toUpperCase();
                 if (officerName.equals(name.toUpperCase())) {
-                        if (firstSearchDate.compareTo(eventDateFormatted) <= 0 &&
-                                secondSearchDate.compareTo(eventDateFormatted) >= 0) {
-                            listEvents.add(event);
-                        }
+                    if (firstSearchDate.compareTo(eventDateFormatted) <= 0 &&
+                            secondSearchDate.compareTo(eventDateFormatted) >= 0) {
+                        listEvents.add(event);
                     }
                 }
             }
+        }
         return listEvents;
     }
 
     /**
      * Prints information of all the teaching commitments assigned to the delivery officer after a given date.
      *
-     * @param name The name of the delivery officer specified.
+     * @param name      The name of the delivery officer specified.
      * @param startDate String of start date in (dd/mm/yyyy) format.
      * @throws ParseException if dates are incorrectly formatted.
      */
@@ -232,9 +240,9 @@ public class DeliveryOfficer {
     /**
      * Prints information of all the teaching commitments assigned to the delivery officer between two given dates.
      *
-     * @param name The name of the delivery officer specified.
+     * @param name      The name of the delivery officer specified.
      * @param startDate String of start date in (dd/mm/yyyy) format.
-     * @param endDate String of end date in (dd/mm/yyyy) format.
+     * @param endDate   String of end date in (dd/mm/yyyy) format.
      * @throws ParseException if dates are incorrectly formatted.
      */
     private void printOfficerEvents(String name, String startDate, String endDate) throws ParseException {
@@ -263,7 +271,7 @@ public class DeliveryOfficer {
         double totalNumberOfEvents = 0;
         double currentNumberOfEvents;
         double counter = 0;
-            String startDate = Validation.convertDateTimeToUKFormat(Main.getStartingDate());
+        String startDate = Validation.convertDateTimeToUKFormat(Main.getStartingDate());
 
         for (DeliveryOfficer deliveryOfficer : getAllStaffList()) {
             if (deliveryOfficer.getTimeCommitment() == 100) {
@@ -272,7 +280,7 @@ public class DeliveryOfficer {
                 counter++;
             }
         }
-        return totalNumberOfEvents/counter;
+        return totalNumberOfEvents / counter;
     }
 
     /**
@@ -294,7 +302,7 @@ public class DeliveryOfficer {
                 counter++;
             }
         }
-        return totalNumberOfEvents/counter;
+        return totalNumberOfEvents / counter;
     }
 
     /**
@@ -302,7 +310,7 @@ public class DeliveryOfficer {
      * Technocamps, between two given dates.
      *
      * @param startDate a String in format (dd/MM/yyyy) for the start search date.
-     * @param endDate a String in format (dd/MM/yyyy) for the end search date.
+     * @param endDate   a String in format (dd/MM/yyyy) for the end search date.
      * @return a double containing the average number of events for 100% delivery officers.
      * @throws ParseException if date entered isn't formatted correctly.
      */
@@ -320,7 +328,7 @@ public class DeliveryOfficer {
                 counter++;
             }
         }
-        return totalNumberOfEvents/counter;
+        return totalNumberOfEvents / counter;
     }
 
     /**
@@ -330,7 +338,7 @@ public class DeliveryOfficer {
      */
     public void printOfficerNumberOfEvents() throws ParseException {
         System.out.printf("%-25s %-20s %-10s", getName(), getOfficerNumberOfEvents(),
-                Math.round((averageOfficerNumberOfEvents() * (getTimeCommitment()/100.0))));
+                Math.round((averageOfficerNumberOfEvents() * (getTimeCommitment() / 100.0))));
     }
 
     /**
@@ -341,19 +349,19 @@ public class DeliveryOfficer {
      */
     public void printOfficerNumberOfEvents(String startDate) throws ParseException {
         System.out.printf("%-25s %-20s %-10s", getName(), getOfficerNumberOfEvents(startDate),
-                Math.round((averageOfficerNumberOfEvents(startDate) * (getTimeCommitment()/100.0))));
+                Math.round((averageOfficerNumberOfEvents(startDate) * (getTimeCommitment() / 100.0))));
     }
 
     /**
      * Prints the number of events assigned to the delivery Officer, between two specific dates.
      *
      * @param startDate a String of a date in format (dd/MM/yyyy).
-     * @param endDate a String of a date in format (dd/MM/yyyy).
+     * @param endDate   a String of a date in format (dd/MM/yyyy).
      * @throws ParseException if date entered isn't formatted correctly.
      */
     public void printOfficerNumberOfEvents(String startDate, String endDate) throws ParseException {
         System.out.printf("%-25s %-20s %-10s", getName(), getOfficerNumberOfEvents(startDate, endDate),
-                Math.round((averageOfficerNumberOfEvents(startDate, endDate) * (getTimeCommitment()/100.0))));
+                Math.round((averageOfficerNumberOfEvents(startDate, endDate) * (getTimeCommitment() / 100.0))));
     }
 
     /**
@@ -375,15 +383,15 @@ public class DeliveryOfficer {
             for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
                 String officerName = deliveryOfficer.getName().toUpperCase();
                 if (officerName.equals(name.toUpperCase())) {
-                        String eventType = event.getEventType();
-                        if (eventType.equals("Workshop") || eventType.equals("Technoteach")) {
-                            counter++;
-                        } else if (eventType.equals("Technoclub")) {
-                            counter = counter + 0.5;
-                        }
+                    String eventType = event.getEventType();
+                    if (eventType.equals("Workshop") || eventType.equals("Technoteach")) {
+                        counter++;
+                    } else if (eventType.equals("Technoclub")) {
+                        counter = counter + 0.5;
                     }
                 }
             }
+        }
         return (int) Math.round(counter);
     }
 
@@ -403,14 +411,14 @@ public class DeliveryOfficer {
                 String officerName = deliveryOfficer.getName().toUpperCase();
                 String eventType;
                 if (officerName.equals(name.toUpperCase())) {
-                        if (firstSearchDate.compareTo(eventDate) <= 0) {
-                            eventType = event.getEventType();
-                            if (eventType.equals("Workshop") || eventType.equals("Technoteach")) {
-                                counter++;
-                            } else if (eventType.equals("Technoclub")) {
-                                counter = counter + 0.5;
-                            }
+                    if (firstSearchDate.compareTo(eventDate) <= 0) {
+                        eventType = event.getEventType();
+                        if (eventType.equals("Workshop") || eventType.equals("Technoteach")) {
+                            counter++;
+                        } else if (eventType.equals("Technoclub")) {
+                            counter = counter + 0.5;
                         }
+                    }
                 }
             }
         }
@@ -418,12 +426,11 @@ public class DeliveryOfficer {
     }
 
 
-
     /**
      * Gets the officer number of events between two given dates.
      *
      * @param startDate a String in format (dd/MM/yyyy) for the start search date.
-     * @param endDate a String in format (dd/MM/yyyy) for the end search date.
+     * @param endDate   a String in format (dd/MM/yyyy) for the end search date.
      * @return an int of the number of events for the delivery officer.
      * @throws ParseException when date entered isn't formatted correctly.
      */
@@ -437,17 +444,17 @@ public class DeliveryOfficer {
                 String officerName = deliveryOfficer.getName().toUpperCase();
                 String eventType = event.getEventType();
                 if (officerName.equals(name.toUpperCase())) {
-                        if (firstSearchDate.compareTo(eventDate) <= 0 &&
-                                secondSearchDate.compareTo(eventDate) >= 0) {
-                            if (eventType.equals("Workshop") || eventType.equals("Technoteach")) {
-                                counter++;
-                            } else if (eventType.equals("Technoclub")) {
-                                counter = counter + 0.5;
-                            }
+                    if (firstSearchDate.compareTo(eventDate) <= 0 &&
+                            secondSearchDate.compareTo(eventDate) >= 0) {
+                        if (eventType.equals("Workshop") || eventType.equals("Technoteach")) {
+                            counter++;
+                        } else if (eventType.equals("Technoclub")) {
+                            counter = counter + 0.5;
                         }
                     }
                 }
             }
+        }
         return (int) Math.round(counter);
     }
 
@@ -465,7 +472,7 @@ public class DeliveryOfficer {
      *
      * @param date a String in the format dd/mm/yyyy
      */
-    public static void displayAvailableOfficers(String date) {
+    public static void displayAvailableOfficers(String date) throws ParseException {
         availableOfficers.clear();
         availableOfficers.addAll(DeliveryOfficer.getAllStaffList());
         for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
@@ -480,10 +487,15 @@ public class DeliveryOfficer {
                 }
             }
         }
-        System.out.println("Available Officers on " + date + ":");
+        System.out.println("Available Officers: | Events that Week | Events Compared to Average for -2 weeks + 2 weeks");
         for (DeliveryOfficer deliveryOfficer : availableOfficers) {
-            System.out.println(deliveryOfficer.getName());
+            System.out.printf("%-25s\t %-15s %20s", deliveryOfficer.getName(),
+                    getNumberOfEventsForWeek(deliveryOfficer.getName(), date),
+                    deliveryOfficer.getEventsComparedToAverageForMonth(deliveryOfficer.getName(), date));
+            System.out.println();
         }
+        System.out.println();
+        recommendOfficerForWorkshop(date);
     }
 
     /**
@@ -577,9 +589,9 @@ public class DeliveryOfficer {
     /**
      * Adds staff members to the list of all staff and to the external staff details text file.
      *
-     * @param fullName a String containing a staff member's full name.
-     * @param email a String containing a staff member's email address.
-     * @param timeCommitment an int of the percentage of time the staff member has allocated to Technocamps.
+     * @param fullName        a String containing a staff member's full name.
+     * @param email           a String containing a staff member's email address.
+     * @param timeCommitment  an int of the percentage of time the staff member has allocated to Technocamps.
      * @param adminPrivileges a boolean containing staff member's admin privileges.
      * @throws IOException if issues with writing to staff details text file.
      */
@@ -614,7 +626,7 @@ public class DeliveryOfficer {
     /**
      * Prints a list of all future events, for a named Officer, after a given date.
      *
-     * @param name the name of a delivery Officer.
+     * @param name      the name of a delivery Officer.
      * @param startDate a String in the format (dd/mm/yyyy)
      * @throws ParseException if dates are incorrectly formatted.
      */
@@ -631,19 +643,19 @@ public class DeliveryOfficer {
     /**
      * Prints a list of all events for a named Officer between two given dates.
      *
-     * @param name the name of a delivery Officer.
+     * @param name      the name of a delivery Officer.
      * @param startDate a String in the format (dd/mm/yyyy)
-     * @param endDate a String in the format (dd/mm/yyyy)
+     * @param endDate   a String in the format (dd/mm/yyyy)
      * @throws ParseException if dates are incorrectly formatted.
      */
     public static void printStaffEventLists(String name, String startDate, String endDate) throws ParseException {
-            for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-                if (deliveryOfficer.getName().toUpperCase().equals(name.toUpperCase())) {
-                    deliveryOfficer.printOfficerEvents(name, startDate, endDate);
-                    break;
-                }
+        for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
+            if (deliveryOfficer.getName().toUpperCase().equals(name.toUpperCase())) {
+                deliveryOfficer.printOfficerEvents(name, startDate, endDate);
+                break;
             }
         }
+    }
 
     /**
      * Prints the number of all events for all staff members.
@@ -679,7 +691,7 @@ public class DeliveryOfficer {
      * Prints the number of events for each individual staff member between two given dates.
      *
      * @param startDate a String in the format (dd/mm/yyyy)
-     * @param endDate a String in the format (dd/mm/yyyy)
+     * @param endDate   a String in the format (dd/mm/yyyy)
      * @throws ParseException if dates are incorrectly formatted.
      */
     public static void printStaffNumberOfEvents(String startDate, String endDate) throws ParseException {
@@ -725,6 +737,110 @@ public class DeliveryOfficer {
             }
         }
         return counter;
+    }
+
+    public static int getNumberOfEventsForWeek(String name, String date) throws ParseException {
+        if (Validation.isValidDate(date)) {
+            String formattedDate = date.substring(6) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
+            LocalDate dateOfWeek = LocalDate.parse(formattedDate);
+            LocalDate monday = dateOfWeek.with(previousOrSame(DayOfWeek.MONDAY));
+            LocalDate sunday = dateOfWeek.with(nextOrSame(DayOfWeek.SUNDAY));
+            String mondayDate = Validation.convertLocalDateToUKFormat(monday);
+            String sundayDate = Validation.convertLocalDateToUKFormat(sunday);
+            return findStaffMember(name).getOfficerNumberOfEvents(mondayDate, sundayDate);
+        } else {
+            throw new ParseException("Invalid Date", 1);
+        }
+    }
+
+    public static int getNumberOfEventsForWeek(DeliveryOfficer d, String date) throws ParseException {
+        if (Validation.isValidDate(date)) {
+            String formattedDate = date.substring(6) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
+            LocalDate dateOfWeek = LocalDate.parse(formattedDate);
+            LocalDate monday = dateOfWeek.with(previousOrSame(DayOfWeek.MONDAY));
+            LocalDate sunday = dateOfWeek.with(nextOrSame(DayOfWeek.SUNDAY));
+            String mondayDate = Validation.convertLocalDateToUKFormat(monday);
+            String sundayDate = Validation.convertLocalDateToUKFormat(sunday);
+            return d.getOfficerNumberOfEvents(mondayDate, sundayDate);
+        } else {
+            throw new ParseException("Invalid Date", 1);
+        }
+    }
+
+    public double getEventsComparedToAverageForMonth(String name, String date) throws ParseException {
+        double comparedToAverage = 0.0;
+        if (Validation.isValidDate(date)) {
+            String formattedDate = date.substring(6) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
+            LocalDate dateOfWeek = LocalDate.parse(formattedDate);
+            LocalDate monday = null;
+            LocalDate sunday = null;
+            for (int i = 0; i < 2; i++) {                                       //Retrieves date of Monday 2 weeks prior
+                monday = dateOfWeek.with(previous(DayOfWeek.MONDAY));
+            }
+            for (int i = 0; i < 2; i++) {                                       //Retrieves date of Sunday 2 weeks after
+                sunday = dateOfWeek.with(next(DayOfWeek.SUNDAY));
+            }
+            if (monday != null && sunday != null) {
+                String mondayDate = Validation.convertLocalDateToUKFormat(monday);
+                String sundayDate = Validation.convertLocalDateToUKFormat(sunday);
+                double average = (averageOfficerNumberOfEvents(mondayDate, sundayDate)) * (getTimeCommitment()/100.0);
+                comparedToAverage = findStaffMember(name).getOfficerNumberOfEvents(mondayDate, sundayDate) - average;
+
+            } else {
+                System.out.println("Date is null.");
+            }
+        } else {
+            throw new ParseException("Invalid Date", 1);
+        }
+        return comparedToAverage;
+    }
+
+    public double getEventsComparedToAverageForMonth(DeliveryOfficer d, String date) throws ParseException {
+        double comparedToAverage = 0.0;
+        if (Validation.isValidDate(date)) {
+            String formattedDate = date.substring(6) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
+            LocalDate dateOfWeek = LocalDate.parse(formattedDate);
+            LocalDate monday = null;
+            LocalDate sunday = null;
+            for (int i = 0; i < 2; i++) {                                       //Retrieves date of Monday 2 weeks prior
+                monday = dateOfWeek.with(previous(DayOfWeek.MONDAY));
+            }
+            for (int i = 0; i < 2; i++) {                                       //Retrieves date of Sunday 2 weeks after
+                sunday = dateOfWeek.with(next(DayOfWeek.SUNDAY));
+            }
+            if (monday != null && sunday != null) {
+                String mondayDate = Validation.convertLocalDateToUKFormat(monday);
+                String sundayDate = Validation.convertLocalDateToUKFormat(sunday);
+                double average = (averageOfficerNumberOfEvents(mondayDate, sundayDate)) * (getTimeCommitment()/100.0);
+                comparedToAverage = d.getOfficerNumberOfEvents(mondayDate, sundayDate) - average;
+
+            } else {
+                System.out.println("Date is null.");
+            }
+        } else {
+            throw new ParseException("Invalid Date", 1);
+        }
+        return comparedToAverage;
+    }
+
+    public static void recommendOfficerForWorkshop(String date) throws ParseException {
+        DeliveryOfficer leastEvents = getAllStaffList().get(0);
+        double currentEvents;
+        double smallest = getAllStaffList().get(0).getOfficerNumberOfEvents(date);
+        for (DeliveryOfficer d : allStaff) {
+            currentEvents = getNumberOfEventsForWeek(d, date);
+            if (smallest > currentEvents) {
+                smallest = currentEvents;
+                leastEvents = d;
+            } else if (smallest == currentEvents) {
+                if (d.getEventsComparedToAverageForMonth(d, date) < leastEvents.getEventsComparedToAverageForMonth(d, date))
+                    leastEvents = d;
+            }
+        }
+        System.out.println("Recommended Officer | Events that Week | Compared to Average for Surrounding Month");
+        System.out.printf("%-25s\t %-15s %20s", leastEvents.getName(),
+                getNumberOfEventsForWeek(leastEvents.getName(), date),
+                leastEvents.getEventsComparedToAverageForMonth(leastEvents.getName(), date));
     }
 }
 

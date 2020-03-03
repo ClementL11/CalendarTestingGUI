@@ -30,14 +30,13 @@ public class Main {
      * @throws IOException              if text file of Staff member details does not exist.
      * @throws GeneralSecurityException if issue with Google Calendar API credentials.
      */
-    public static void main(String... args) throws IOException, GeneralSecurityException {
+    public static void main(String... args) throws IOException, GeneralSecurityException, ParseException {
         //test();
 
         DeliveryOfficer.populateStaffList();
         CalendarQuickstart.getEventsFromCalendar(startingDate, calendarEmail);
         System.out.println();
         userInterface();
-
     }
 
     /**
@@ -67,7 +66,8 @@ public class Main {
     /**
      * This method is used for testing individual methods when needed.
      */
-    private static void test() {
+    private static void test() throws ParseException {
+        DeliveryOfficer.getNumberOfEventsForWeek("Luke Clement", "29/03/2020");
 
     }
 

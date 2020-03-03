@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import com.google.api.client.auth.oauth2.Credential;
@@ -138,7 +139,7 @@ public class CalendarQuickstart {
      * @throws IOException if issues reading and writing from text files.
      * @throws GeneralSecurityException if issues with Google API credentials.
      */
-    public static void main(String[] args) throws IOException, GeneralSecurityException {
+    public static void main(String[] args) throws IOException, GeneralSecurityException, ParseException {
         Main.main();
     }
 
