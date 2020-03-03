@@ -139,14 +139,15 @@ public class Main {
     private static void viewEventsFromSharedCalendar(Scanner scanner) throws ParseException {
         String response;
         System.out.print("*******************************************************************\n" +
-                "Would you like to: \n1) View all Events from Shared Calendar\n2) View " +
-                "Events between given Dates\n" +
+                "Would you like to: \n" +
+                "1) View all Events from Shared Calendar\n" +
+                "2) View Events between given Dates\n" +
                 "*******************************************************************\n");
         response = scanner.nextLine().trim();
         switch (response) {
             case "1":
                 System.out.println("\nAll Upcoming Events: \n");
-                TechnocampsEvent.printAllEvents(null, null);
+                TechnocampsEvent.printAllEvents();
                 break;
             case "2":
                 String startDate = null;
@@ -185,7 +186,11 @@ public class Main {
                             }
                         }
                     } while (!validDate);
-                    TechnocampsEvent.printAllEvents(startDate, endDate);
+                    if (endDate == null){
+                        TechnocampsEvent.printAllEvents(startDate);
+                    } else {
+                        TechnocampsEvent.printAllEvents(startDate, endDate);
+                    }
                 }
                 break;
             case "":
@@ -236,13 +241,13 @@ public class Main {
         switch (response) {
             case "1": {
                 String startDate = Validation.convertDateTimeToUKFormat(startingDate);
-                DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate, null);
+                DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate);
                 break;
             }
             case "2": {
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 Date todayDate = new Date();
-                DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), dateFormat.format(todayDate), null);
+                DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), dateFormat.format(todayDate));
                 break;
             }
             case "3": {
@@ -282,7 +287,11 @@ public class Main {
                             }
                         }
                     } while (!validDate);
-                    DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate, endDate);
+                    if (endDate == null) {
+                        DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate);
+                    } else {
+                        DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate, endDate);
+                    }
                 }
 
                 break;
@@ -343,7 +352,7 @@ public class Main {
         System.out.println();
         switch (response) {
             case "1":
-                DeliveryOfficer.printStaffNumberOfEvents(null, null, null);
+                DeliveryOfficer.printStaffNumberOfEvents();
 
                 break;
             case "2":
@@ -388,14 +397,18 @@ public class Main {
                             }
                         }
                     } while (!validDate);
-                    DeliveryOfficer.printStaffNumberOfEvents(null, startDate, endDate);
+                    if (endDate == null) {
+                        DeliveryOfficer.printStaffNumberOfEvents(startDate);
+                    } else {
+                        DeliveryOfficer.printStaffNumberOfEvents(startDate, endDate);
+                    }
                 }
                 break;
             case "4":
                 ArrayList<String> dates = TechnocampsEvent.searchByMonth();
                 startDate = dates.get(0);
                 endDate = dates.get(1);
-                DeliveryOfficer.printStaffNumberOfEvents(null, startDate, endDate);
+                DeliveryOfficer.printStaffNumberOfEvents(startDate, endDate);
                 break;
         }
     }
@@ -503,7 +516,6 @@ public class Main {
                     } else {
                         System.out.println("Changes Cancelled.");
                     }
-
                 }
                 break;
         }

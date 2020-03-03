@@ -70,18 +70,54 @@ public class TechnocampsEvent {
         System.out.println();
     }
 
+
+
     /**
      * Prints a string containing the details of the event to the console. It is used when a specific
      * delivery officer is named.
-     *
-     * @param name String of the name of specific delivery officer.
      */
-    public void printEventDetails(String name) {
+    public void printOfficerEventDetails() {
         System.out.println(Validation.convertDateTimeToUKFormat(dateOfEvent) +
                 " | " + startTime.toStringRfc3339().split("T")[1].substring(0, 5) + " - " +
                 endTime.toStringRfc3339().split("T")[1].substring(0, 5) + " | " + eventType
                 + " | " + schoolName + " | " + keyStage + " | " + workshop);
     }
+
+    public static void printAllEvents() {
+            for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
+                if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub") ||
+                        event.getEventType().equals("Technoteach")) {
+                            event.printEventDetails();
+                        }
+
+                }
+            }
+
+    public static void printAllEvents(String startDate) throws ParseException {
+        System.out.println();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date firstSearchDate = new Date();
+        if (!(startDate == null)) {
+            firstSearchDate = format.parse(startDate);
+        }
+        if (TechnocampsEvent.getAllEvents().size() == 0) {
+            System.out.println("No events in Calendar.");
+        } else {
+            System.out.println("Future Events after: " + startDate + "\n");
+            for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
+                String eventDate = event.getDateOfEvent().toStringRfc3339();
+                Date eventDateFormatted = format.parse(eventDate.substring(8, 10) + "/" +
+                        eventDate.substring(5, 7) + "/" + eventDate.substring(0, 4));
+                if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub") ||
+                        event.getEventType().equals("Technoteach")) {
+                        if (firstSearchDate.compareTo(eventDateFormatted) <= 0) {
+                            event.printEventDetails();
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * Iterates through every event stored and prints out details of each. The events can be searched
@@ -106,6 +142,7 @@ public class TechnocampsEvent {
         if (TechnocampsEvent.getAllEvents().size() == 0) {
             System.out.println("No events in Calendar.");
         } else {
+            System.out.println("Events Between: " + startDate + " - " + endDate + "\n");
             for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
                 String eventDate = event.getDateOfEvent().toStringRfc3339();
                 Date eventDateFormatted = format.parse(eventDate.substring(8, 10) + "/" +
