@@ -739,6 +739,14 @@ public class DeliveryOfficer {
         return counter;
     }
 
+    /**
+     * Gets the number of teaching commitments for the delivery Officer that week.
+     *
+     * @param name name of Delivery Officer.
+     * @param date date in the format (dd/mm/yyyy).
+     * @return number of events for the delivery officer that week.
+     * @throws ParseException if date is formatted incorrectly.
+     */
     public static int getNumberOfEventsForWeek(String name, String date) throws ParseException {
         if (Validation.isValidDate(date)) {
             String formattedDate = date.substring(6) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
@@ -753,6 +761,14 @@ public class DeliveryOfficer {
         }
     }
 
+    /**
+     * Gets the number of teaching commitments for the delivery Officer that week.
+     *
+     * @param d Delivery Officer object.
+     * @param date date in the format (dd/mm/yyyy).
+     * @return number of events for the delivery officer that week.
+     * @throws ParseException if date is formatted incorrectly.
+     */
     public static int getNumberOfEventsForWeek(DeliveryOfficer d, String date) throws ParseException {
         if (Validation.isValidDate(date)) {
             String formattedDate = date.substring(6) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
@@ -767,6 +783,16 @@ public class DeliveryOfficer {
         }
     }
 
+    /**
+     * Compares the delivery officer's number of events for the surrounding month of the given date, and the average
+     * events of 100% delivery officers for the surrounding month. Returns a value based off the comparison which
+     * is scaled based of the time commitment of the delivery officer.
+     *
+     * @param name name of delivery officer.
+     * @param date date in the format (dd/mm/yyyy).
+     * @return a value comparing number of events for the week
+     * @throws ParseException if date is formatted incorrectly.
+     */
     public double getEventsComparedToAverageForMonth(String name, String date) throws ParseException {
         double comparedToAverage = 0.0;
         if (Validation.isValidDate(date)) {
@@ -795,6 +821,16 @@ public class DeliveryOfficer {
         return comparedToAverage;
     }
 
+    /**
+     * Compares the delivery officer's number of events for the surrounding month of the given date, and the average
+     * events of 100% delivery officers for the surrounding month. Returns a value based off the comparison which
+     * is scaled based of the time commitment of the delivery officer.
+     *
+     * @param d a delivery officer object.
+     * @param date date in the format (dd/mm/yyyy).
+     * @return a value comparing number of events for the week
+     * @throws ParseException if date is formatted incorrectly.
+     */
     public double getEventsComparedToAverageForMonth(DeliveryOfficer d, String date) throws ParseException {
         double comparedToAverage = 0.0;
         if (Validation.isValidDate(date)) {
@@ -823,6 +859,14 @@ public class DeliveryOfficer {
         return comparedToAverage;
     }
 
+    /**
+     * Recommends a deliveryOfficer for a workshop based on the number of events that week. If two or more delivery
+     * Officers have the same amount of events that week, then their monthly number compared to the average is
+     * considered.
+     *
+     * @param date date in the format (dd/mm/yyyy).
+     * @throws ParseException if date incorrectly formatted.
+     */
     public static void recommendOfficerForWorkshop(String date) throws ParseException {
         DeliveryOfficer leastEvents = getAllStaffList().get(0);
         double currentEvents;
