@@ -140,17 +140,17 @@ public class Validation {
      *
      * @return delivery officer who has logged in successfully or if not, returns null.
      */
-    public static DeliveryOfficer logIn(){
+    public static Staff logIn(){
         Scanner scanner = new Scanner(System.in);
-        DeliveryOfficer.printAllStaff();
+        Staff.printAllStaff();
         System.out.println("X)\tQuit");
         System.out.println("Please select your name:");
         String chosenName = scanner.nextLine().trim();
         if (chosenName.toUpperCase().equals("X")) {
             System.out.println("Thanks for using our System. Shutting Down.");
             System.exit(0);
-        } else if (DeliveryOfficer.staffMemberExists(chosenName)) {
-            DeliveryOfficer staffMember = DeliveryOfficer.findStaffMember(chosenName);
+        } else if (Staff.staffMemberExists(chosenName)) {
+            Staff staffMember = Staff.findStaffMember(chosenName);
 
             System.out.println("\nWelcome " + staffMember.getName() + "!");
             return staffMember;

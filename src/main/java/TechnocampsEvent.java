@@ -5,7 +5,6 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-
 import com.google.api.client.util.DateTime;
 
 public class TechnocampsEvent {
@@ -21,7 +20,7 @@ public class TechnocampsEvent {
     private String schoolName;
     private String keyStage;
     private String workshop;
-    private ArrayList<DeliveryOfficer> listOfDeliveryOfficers;
+    private ArrayList<Staff> listOfStaffs;
 
 
     /**
@@ -35,12 +34,12 @@ public class TechnocampsEvent {
      * @param schoolName a String containing the name of the school.
      * @param keyStage a String containing the key stage of the class
      * @param workshop a string containing the name of the workshop to be delivered.
-     * @param listOfDeliveryOfficers an Arraylist containing Delivery Officers assigned to the event.
+     * @param listOfStaffs an Arraylist containing Delivery Officers assigned to the event.
      */
     public TechnocampsEvent(String uniqueID, DateTime dateOfEvent, DateTime startTime, DateTime endTime,
                             String universityCode, String eventType,
                             String schoolName, String keyStage, String workshop,
-                            ArrayList<DeliveryOfficer> listOfDeliveryOfficers)
+                            ArrayList<Staff> listOfStaffs)
     {
         this.dateOfEvent = dateOfEvent;
         this.startTime = startTime;
@@ -50,7 +49,7 @@ public class TechnocampsEvent {
         this.schoolName = schoolName;
         this.keyStage = keyStage;
         this.workshop = workshop;
-        this.listOfDeliveryOfficers = listOfDeliveryOfficers;
+        this.listOfStaffs = listOfStaffs;
         this.uniqueID = uniqueID;
     }
 
@@ -64,8 +63,8 @@ public class TechnocampsEvent {
                 endTime.toStringRfc3339().split("T")[1].substring(0, 5) + " | " + eventType
                 + " | " + schoolName + " | " + keyStage + " | " + workshop);
         System.out.println("Delivery Officers Assigned:");
-        for (DeliveryOfficer deliveryOfficer : listOfDeliveryOfficers) {
-            System.out.println(deliveryOfficer.getName());
+        for (Staff staff : listOfStaffs) {
+            System.out.println(staff.getName());
         }
         System.out.println();
     }
@@ -173,7 +172,7 @@ public class TechnocampsEvent {
      */
     public void assignDeliveryOfficer(String name) {
         boolean officerFound = false;
-        for (DeliveryOfficer deliveryofficer : getListOfDeliveryOfficers()) {
+        for (Staff deliveryofficer : getListOfStaff()) {
             if (deliveryofficer.getName().toUpperCase().equals(name.toUpperCase())) {
                 officerFound = true;
                 break;
@@ -183,9 +182,9 @@ public class TechnocampsEvent {
             System.out.println("Officer already assigned to event.");
             }else {
 
-            for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-                if (deliveryOfficer.getName().equals(name)) {
-                    getListOfDeliveryOfficers().add(deliveryOfficer);
+            for (Staff staff : Staff.getAllStaffList()) {
+                if (staff.getName().equals(name)) {
+                    getListOfStaff().add(staff);
                     officerFound = true;
                 }
             }
@@ -202,10 +201,10 @@ public class TechnocampsEvent {
      */
     public void removeDeliveryOfficer(String name) {
         boolean officerFound = false;
-        for (DeliveryOfficer deliveryofficer : getListOfDeliveryOfficers()) {
+        for (Staff deliveryofficer : getListOfStaff()) {
             if (deliveryofficer.getName().toUpperCase().equals(name.toUpperCase())) {
                 officerFound = true;
-                getListOfDeliveryOfficers().remove(deliveryofficer);
+                getListOfStaff().remove(deliveryofficer);
                 System.out.println(name + "Has been removed from this event.");
                 break;
             }
@@ -222,7 +221,7 @@ public class TechnocampsEvent {
      */
     public void setDate(DateTime newDate) {
         setDateOfEvent(newDate);
-        getListOfDeliveryOfficers().clear();
+        getListOfStaff().clear();
     }
 
     /**
@@ -320,8 +319,8 @@ public class TechnocampsEvent {
      *
      * @return An ArrayList of Delivery officers.
      */
-    public ArrayList<DeliveryOfficer> getListOfDeliveryOfficers() {
-        return listOfDeliveryOfficers;
+    public ArrayList<Staff> getListOfStaff() {
+        return listOfStaffs;
     }
 
     public static ArrayList<TechnocampsEvent> getAllEvents() {

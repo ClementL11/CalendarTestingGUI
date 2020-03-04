@@ -112,18 +112,18 @@ public class CalendarQuickstart {
                         String keyStage = eventName.get(3);
                         String workshop = eventName.get(4);
                         ArrayList<EventAttendee> deliveryNames = (ArrayList<EventAttendee>) event.getAttendees();
-                        ArrayList<DeliveryOfficer> eventDeliveryOfficers = new ArrayList<>();
+                        ArrayList<Staff> eventStaffs = new ArrayList<>();
                         if (deliveryNames.size() > 0) {
                             for (EventAttendee attendee : deliveryNames) {
-                                for (DeliveryOfficer staffMember : DeliveryOfficer.getAllStaffList())
+                                for (Staff staffMember : Staff.getAllStaffList())
                                     if (attendee.getEmail().trim().equals(staffMember.getEmail())) {
-                                        eventDeliveryOfficers.add(staffMember);
+                                        eventStaffs.add(staffMember);
                                     }
                             }
                         }
                         TechnocampsEvent.getAllEvents().add(new TechnocampsEvent(uniqueId, dateOfEvent, startTime,
                                 endTime, universityCode, eventType, schoolName, keyStage, workshop,
-                                eventDeliveryOfficers));
+                                eventStaffs));
                     }
                 } catch (Exception exception) {
                     System.out.println("Poorly formatted event in Calendar ignored: " + eventSummary);

@@ -33,7 +33,7 @@ public class Main {
     public static void main(String... args) throws IOException, GeneralSecurityException, ParseException {
         //test();
 
-        DeliveryOfficer.populateStaffList();
+        Staff.populateStaffList();
         CalendarQuickstart.getEventsFromCalendar(startingDate, calendarEmail);
         System.out.println();
         userInterface();
@@ -47,7 +47,7 @@ public class Main {
         System.out.println("Welcome to the Technocamps Booking System. Please select your name:\n\n");
         boolean memberExists = true;
         do {
-            DeliveryOfficer user = Validation.logIn();
+            Staff user = Validation.logIn();
             if (user == null) {
                 memberExists = false;
                 System.out.println("\nNot a valid choice!\n");
@@ -67,7 +67,7 @@ public class Main {
      * This method is used for testing individual methods when needed.
      */
     private static void test() throws ParseException {
-        DeliveryOfficer.getNumberOfEventsForWeek("Luke Clement", "29/03/2020");
+        Staff.getNumberOfEventsForWeek("Luke Clement", "29/03/2020");
 
     }
 
@@ -77,7 +77,7 @@ public class Main {
      * @param user The current Delivery Officer logged in to the system.
      * @param adminPrivileges A boolean showing whether the User is an admin or not.
      */
-    private static void mainMenu(DeliveryOfficer user, boolean adminPrivileges) {
+    private static void mainMenu(Staff user, boolean adminPrivileges) {
 
         try {
 
@@ -207,13 +207,13 @@ public class Main {
      * @param adminPrivileges A boolean showing whether the User is an admin or not.
      * @throws ParseException if dates entered are incorrectly formatted.
      */
-    public static void viewIndividualStaffEvents(DeliveryOfficer user, Scanner scanner, boolean adminPrivileges)
+    public static void viewIndividualStaffEvents(Staff user, Scanner scanner, boolean adminPrivileges)
             throws ParseException {
         System.out.println();
-        DeliveryOfficer.printAllStaff();
+        Staff.printAllStaff();
         System.out.println();
         String chosenStaffMemberName;
-        DeliveryOfficer chosenStaffMember = null;
+        Staff chosenStaffMember = null;
         boolean validName;
         do {
             validName = true;
@@ -221,11 +221,11 @@ public class Main {
             chosenStaffMemberName = scanner.nextLine().trim();
             if (chosenStaffMemberName.equals("")) {
                 mainMenu(user, adminPrivileges);
-            } else if (!DeliveryOfficer.staffMemberExists(chosenStaffMemberName)) {
+            } else if (!Staff.staffMemberExists(chosenStaffMemberName)) {
                 System.out.println("No staff member by that name found!");
                 validName = false;
             } else {
-                chosenStaffMember = DeliveryOfficer.findStaffMember(chosenStaffMemberName);
+                chosenStaffMember = Staff.findStaffMember(chosenStaffMemberName);
             }
         } while (!validName);
         System.out.println("Chosen Officer: " + chosenStaffMember.getName());
@@ -241,13 +241,13 @@ public class Main {
         switch (response) {
             case "1": {
                 String startDate = Validation.convertDateTimeToUKFormat(startingDate);
-                DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate);
+                Staff.printStaffEventLists(chosenStaffMember.getName(), startDate);
                 break;
             }
             case "2": {
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 Date todayDate = new Date();
-                DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), dateFormat.format(todayDate));
+                Staff.printStaffEventLists(chosenStaffMember.getName(), dateFormat.format(todayDate));
                 break;
             }
             case "3": {
@@ -288,9 +288,9 @@ public class Main {
                         }
                     } while (!validDate);
                     if (endDate == null) {
-                        DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate);
+                        Staff.printStaffEventLists(chosenStaffMember.getName(), startDate);
                     } else {
-                        DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate, endDate);
+                        Staff.printStaffEventLists(chosenStaffMember.getName(), startDate, endDate);
                     }
                 }
 
@@ -300,7 +300,7 @@ public class Main {
                 ArrayList<String> dates = TechnocampsEvent.searchByMonth();
                 String startDate = dates.get(0);
                 String endDate = dates.get(1);
-                DeliveryOfficer.printStaffEventLists(chosenStaffMember.getName(), startDate, endDate);
+                Staff.printStaffEventLists(chosenStaffMember.getName(), startDate, endDate);
                 break;
             case "":
                 break;
@@ -323,7 +323,7 @@ public class Main {
             } else {
                 try {
                     Validation.checkValidDate(response);
-                    DeliveryOfficer.displayAvailableOfficers(response);
+                    Staff.displayAvailableOfficers(response);
                 } catch (ParseException e) {
                     System.out.println("Invalid Date Format! (To return to the main menu press Enter)");
                     validResponse = false;
@@ -352,13 +352,13 @@ public class Main {
         System.out.println();
         switch (response) {
             case "1":
-                DeliveryOfficer.printStaffNumberOfEvents();
+                Staff.printStaffNumberOfEvents();
 
                 break;
             case "2":
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 Date todayDate = new Date();
-                DeliveryOfficer.printStaffNumberOfEvents(dateFormat.format(todayDate));
+                Staff.printStaffNumberOfEvents(dateFormat.format(todayDate));
                 break;
             case "3":
                 String startDate = null;
@@ -398,9 +398,9 @@ public class Main {
                         }
                     } while (!validDate);
                     if (endDate == null) {
-                        DeliveryOfficer.printStaffNumberOfEvents(startDate);
+                        Staff.printStaffNumberOfEvents(startDate);
                     } else {
-                        DeliveryOfficer.printStaffNumberOfEvents(startDate, endDate);
+                        Staff.printStaffNumberOfEvents(startDate, endDate);
                     }
                 }
                 break;
@@ -408,7 +408,7 @@ public class Main {
                 ArrayList<String> dates = TechnocampsEvent.searchByMonth();
                 startDate = dates.get(0);
                 endDate = dates.get(1);
-                DeliveryOfficer.printStaffNumberOfEvents(startDate, endDate);
+                Staff.printStaffNumberOfEvents(startDate, endDate);
                 break;
         }
     }
@@ -422,9 +422,9 @@ public class Main {
      * @param adminPrivileges A boolean showing whether the User is an admin or not.
      * @throws IOException if there is an error with the Staff text file the information is written to.
      */
-    public static void editStaffDetails(DeliveryOfficer user, Scanner scanner, boolean adminPrivileges)
+    public static void editStaffDetails(Staff user, Scanner scanner, boolean adminPrivileges)
             throws IOException {
-        DeliveryOfficer.printAllStaff();
+        Staff.printAllStaff();
         String chosenStaffMemberName;
         boolean validName;
         do {
@@ -434,13 +434,13 @@ public class Main {
             if (chosenStaffMemberName.equals("")) {
                 mainMenu(user, adminPrivileges);
             }
-            if (!DeliveryOfficer.staffMemberExists(chosenStaffMemberName)) {
+            if (!Staff.staffMemberExists(chosenStaffMemberName)) {
                 System.out.println("No staff member by that name found!");
                 validName = false;
             }
         } while (!validName);
         System.out.print("Chosen Staff Member: " + chosenStaffMemberName);
-        DeliveryOfficer chosenStaffMember = DeliveryOfficer.findStaffMember(chosenStaffMemberName);
+        Staff chosenStaffMember = Staff.findStaffMember(chosenStaffMemberName);
         System.out.print("\n*******************************************************************\n" + "Would you " +
                 "like to\n" +
                 "1) Edit Name \n" +
@@ -501,7 +501,7 @@ public class Main {
                 break;
             case "4":
                 if (user.equals(chosenStaffMember)) {
-                    if (DeliveryOfficer.getAdministratorsCount() == 1) {
+                    if (Staff.getAdministratorsCount() == 1) {
                         System.out.println("As you are the only admin, you cannot remove your privileges.");
                     }
                 } else {
@@ -530,7 +530,7 @@ public class Main {
      * @param scanner this is a scanner that reads the system input previously used in the main menu method.
      * @throws IOException if there is an error with the Staff text file the information is written to.
      */
-    public static void addRemoveStaff(DeliveryOfficer user, Scanner scanner) throws IOException {
+    public static void addRemoveStaff(Staff user, Scanner scanner) throws IOException {
         System.out.println("\n*******************************************************************\n" + "Would you " +
                 "like to\n" +
                 "1) Add New Staff Member \n" +
@@ -543,6 +543,7 @@ public class Main {
                 String email = null;
                 int timeCommitment = 0;
                 boolean adminPrivileges = false;
+                boolean isDeliveryOfficer = false;
                 boolean error = false;
 
                 System.out.println("Enter Staff Member Name: ");
@@ -573,6 +574,10 @@ public class Main {
                         System.out.println("Admin Privileges (Y/N): ");
                         response = scanner.nextLine().trim().toUpperCase();
                         adminPrivileges = response.equals("Y");
+                            System.out.println("Delivery Officer (Y/N): ");
+                            response = scanner.nextLine().trim().toUpperCase();
+                            isDeliveryOfficer = response.equals("Y");
+
                     }
                 }
                 System.out.println("\nStaff Member Details:\nName:\t\t\t\t" + name + "\nEmail:\t\t\t\t" + email +
@@ -580,24 +585,24 @@ public class Main {
                 System.out.println("Are the details all correct? (Y/N): ");
                 response = scanner.nextLine().trim().toUpperCase();
                 if (response.equals("Y")) {
-                    DeliveryOfficer.addNewStaffMember(name, email, timeCommitment, adminPrivileges);
+                    Staff.addNewStaffMember(name, email, timeCommitment, adminPrivileges, isDeliveryOfficer);
                     System.out.println("Staff Member Successfully Added");
                 } else {
                     System.out.println("Details were not saved");
                 }
                 break;
             case "2":
-                DeliveryOfficer.printAllStaff();
+                Staff.printAllStaff();
                 System.out.println("Please select Delivery Officer to Remove:");
                 String chosenName = scanner.nextLine().trim();
-                if (DeliveryOfficer.staffMemberExists(chosenName)) {
-                    DeliveryOfficer officerToDelete = DeliveryOfficer.findStaffMember(chosenName);
+                if (Staff.staffMemberExists(chosenName)) {
+                    Staff officerToDelete = Staff.findStaffMember(chosenName);
 
                     if (officerToDelete.equals(user)) {
                         System.out.println("You cannot delete yourself!");
                     } else {
                         Validation.confirmChoice("Delete " + officerToDelete.getName());
-                        DeliveryOfficer.removeStaffMember(officerToDelete);
+                        Staff.removeStaffMember(officerToDelete);
                     }
                     break;
                 }

@@ -1,10 +1,10 @@
-Alex Wing, alex.wing@technocamps.com, 100, false
-Casey Denner, casey.denner@technocamps.com, 50, false
-Jack Roberts, jack.roberts@technocamps.com, 50, false
-Joanne Ralph, joanne.ralph@technocamps.com, 0, true
-Lauren Powell, lauren.powell@technocamps.com, 100, false
-Luke Clement, luke.clement@technocamps.com, 100, false
-Luke von Sicard, luke.vonsicard@technocamps.com, 100, false
-Rama Vaidhiyanathan, ramalakshmi.vaidhiyanathan@technocamps.com, 50, false
-Randell Gaya, randell.gaya@technocamps.com, 50, false
-Tom Blanchard, tom.blanchard@technocamps.com, 50, false
+Alex Wing, alex.wing@technocamps.com, 100, false, true
+Casey Denner, casey.denner@technocamps.com, 50, false, true
+Jack Roberts, jack.roberts@technocamps.com, 50, false, true
+Joanne Ralph, joanne.ralph@technocamps.com, 0, true, false
+Lauren Powell, lauren.powell@technocamps.com, 100, false, true
+Luke Clement, luke.clement@technocamps.com, 100, false, true
+Luke von Sicard, luke.vonsicard@technocamps.com, 100, false, true
+Rama Vaidhiyanathan, ramalakshmi.vaidhiyanathan@technocamps.com, 50, false, true
+Randell Gaya, randell.gaya@technocamps.com, 50, false, true
+Tom Blanchard, tom.blanchard@technocamps.com, 50, false, true

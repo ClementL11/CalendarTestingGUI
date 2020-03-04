@@ -12,29 +12,31 @@ import static java.time.temporal.TemporalAdjusters.next;
 
 import java.util.*;
 
-public class DeliveryOfficer {
+public class Staff {
 
-    private static final ArrayList<DeliveryOfficer> allStaff = new ArrayList<>();
-    private static final ArrayList<DeliveryOfficer> availableOfficers = new ArrayList<>();
+    private static final ArrayList<Staff> allStaff = new ArrayList<>();
+    private static final ArrayList<Staff> availableOfficers = new ArrayList<>();
     private static int staffNumber = 1;
     private String name;
     private String email;
     private int timeCommitment;
     private boolean adminPrivileges;
     private int uniqueStaffNumber;
+    private boolean isDeliveryOfficer;
 
     /**
-     * Constructor for objects of the class DeliveryOfficer.
+     * Constructor for objects of the class Staff.
      *
      * @param email          a String containing the email address of the officer.
      * @param name           a String containing a full name for the delivery officer.
      * @param timeCommitment an int containing the percentage time commitment for the delivery officer.
      */
-    public DeliveryOfficer(String name, String email, int timeCommitment, boolean adminPrivileges) {
+    public Staff(String name, String email, int timeCommitment, boolean adminPrivileges, boolean isDeliveryOfficer) {
         this.email = email;
         this.name = name;
         this.timeCommitment = timeCommitment;
         this.adminPrivileges = adminPrivileges;
+        this.isDeliveryOfficer = isDeliveryOfficer;
     }
 
     /**
@@ -135,6 +137,14 @@ public class DeliveryOfficer {
         updateStaffInformation();
     }
 
+    public boolean isDeliveryOfficer() {
+        return isDeliveryOfficer;
+    }
+
+    public void setDeliveryOfficer(boolean deliveryOfficer) {
+        isDeliveryOfficer = deliveryOfficer;
+    }
+
     /**
      * Gets all events currently assigned to the delivery officer and return them in a list.
      *
@@ -143,8 +153,8 @@ public class DeliveryOfficer {
     private ArrayList<TechnocampsEvent> getAllEvents() {
         ArrayList<TechnocampsEvent> listEvents = new ArrayList<>();
         for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
-            for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
-                String officerName = deliveryOfficer.getName().toUpperCase();
+            for (Staff staff : event.getListOfStaff()) {
+                String officerName = staff.getName().toUpperCase();
                 if (officerName.equals(name.toUpperCase())) {
                     listEvents.add(event);
                 }
@@ -170,8 +180,8 @@ public class DeliveryOfficer {
         for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
             String eventDate = event.getDateOfEvent().toStringRfc3339();
             Date eventDateFormatted = Validation.convertDateTimeToUKFormat(eventDate);
-            for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
-                String officerName = deliveryOfficer.getName().toUpperCase();
+            for (Staff staff : event.getListOfStaff()) {
+                String officerName = staff.getName().toUpperCase();
                 if (officerName.equals(name.toUpperCase())) {
 
                     if (firstSearchDate.compareTo(eventDateFormatted) <= 0) {
@@ -202,8 +212,8 @@ public class DeliveryOfficer {
         for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
             String eventDate = event.getDateOfEvent().toStringRfc3339();
             Date eventDateFormatted = Validation.convertDateTimeToUKFormat(eventDate);
-            for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
-                String officerName = deliveryOfficer.getName().toUpperCase();
+            for (Staff staff : event.getListOfStaff()) {
+                String officerName = staff.getName().toUpperCase();
                 if (officerName.equals(name.toUpperCase())) {
                     if (firstSearchDate.compareTo(eventDateFormatted) <= 0 &&
                             secondSearchDate.compareTo(eventDateFormatted) >= 0) {
@@ -273,11 +283,13 @@ public class DeliveryOfficer {
         double counter = 0;
         String startDate = Validation.convertDateTimeToUKFormat(Main.getStartingDate());
 
-        for (DeliveryOfficer deliveryOfficer : getAllStaffList()) {
-            if (deliveryOfficer.getTimeCommitment() == 100) {
-                currentNumberOfEvents = deliveryOfficer.getOfficerNumberOfEvents(startDate);
-                totalNumberOfEvents = totalNumberOfEvents + currentNumberOfEvents;
-                counter++;
+        for (Staff staff : getAllStaffList()) {
+            if (staff.isDeliveryOfficer()) {
+                if (staff.getTimeCommitment() == 100) {
+                    currentNumberOfEvents = staff.getOfficerNumberOfEvents(startDate);
+                    totalNumberOfEvents = totalNumberOfEvents + currentNumberOfEvents;
+                    counter++;
+                }
             }
         }
         return totalNumberOfEvents / counter;
@@ -295,11 +307,13 @@ public class DeliveryOfficer {
         double totalNumberOfEvents = 0;
         double currentNumberOfEvents;
         double counter = 0;
-        for (DeliveryOfficer deliveryOfficer : getAllStaffList()) {
-            if (deliveryOfficer.getTimeCommitment() == 100) {
-                currentNumberOfEvents = deliveryOfficer.getOfficerNumberOfEvents(startDate);
-                totalNumberOfEvents = totalNumberOfEvents + currentNumberOfEvents;
-                counter++;
+        for (Staff staff : getAllStaffList()) {
+            if (staff.isDeliveryOfficer()) {
+                if (staff.getTimeCommitment() == 100) {
+                    currentNumberOfEvents = staff.getOfficerNumberOfEvents(startDate);
+                    totalNumberOfEvents = totalNumberOfEvents + currentNumberOfEvents;
+                    counter++;
+                }
             }
         }
         return totalNumberOfEvents / counter;
@@ -321,11 +335,13 @@ public class DeliveryOfficer {
         if (startDate == null) {
             startDate = Validation.convertDateTimeToUKFormat(Main.getStartingDate());
         }
-        for (DeliveryOfficer deliveryOfficer : getAllStaffList()) {
-            if (deliveryOfficer.getTimeCommitment() == 100) {
-                currentNumberOfEvents = deliveryOfficer.getOfficerNumberOfEvents(startDate, endDate);
-                totalNumberOfEvents = totalNumberOfEvents + currentNumberOfEvents;
-                counter++;
+        for (Staff staff : getAllStaffList()) {
+            if (staff.isDeliveryOfficer()) {
+                if (staff.getTimeCommitment() == 100) {
+                    currentNumberOfEvents = staff.getOfficerNumberOfEvents(startDate, endDate);
+                    totalNumberOfEvents = totalNumberOfEvents + currentNumberOfEvents;
+                    counter++;
+                }
             }
         }
         return totalNumberOfEvents / counter;
@@ -380,8 +396,8 @@ public class DeliveryOfficer {
     private int getOfficerNumberOfEvents() {
         double counter = 0.0;
         for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
-            for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
-                String officerName = deliveryOfficer.getName().toUpperCase();
+            for (Staff staff : event.getListOfStaff()) {
+                String officerName = staff.getName().toUpperCase();
                 if (officerName.equals(name.toUpperCase())) {
                     String eventType = event.getEventType();
                     if (eventType.equals("Workshop") || eventType.equals("Technoteach")) {
@@ -407,8 +423,8 @@ public class DeliveryOfficer {
         double counter = 0.0;
         for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
             Date eventDate = Validation.convertDateTimeToUKFormat(event.getDateOfEvent().toStringRfc3339());
-            for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
-                String officerName = deliveryOfficer.getName().toUpperCase();
+            for (Staff staff : event.getListOfStaff()) {
+                String officerName = staff.getName().toUpperCase();
                 String eventType;
                 if (officerName.equals(name.toUpperCase())) {
                     if (firstSearchDate.compareTo(eventDate) <= 0) {
@@ -440,8 +456,8 @@ public class DeliveryOfficer {
         double counter = 0.0;
         for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
             Date eventDate = Validation.convertDateTimeToUKFormat(event.getDateOfEvent().toStringRfc3339());
-            for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
-                String officerName = deliveryOfficer.getName().toUpperCase();
+            for (Staff staff : event.getListOfStaff()) {
+                String officerName = staff.getName().toUpperCase();
                 String eventType = event.getEventType();
                 if (officerName.equals(name.toUpperCase())) {
                     if (firstSearchDate.compareTo(eventDate) <= 0 &&
@@ -463,7 +479,7 @@ public class DeliveryOfficer {
      *
      * @return an ArrayList containing Delivery Officers.
      */
-    public static ArrayList<DeliveryOfficer> getAllStaffList() {
+    public static ArrayList<Staff> getAllStaffList() {
         return allStaff;
     }
 
@@ -474,13 +490,13 @@ public class DeliveryOfficer {
      */
     public static void displayAvailableOfficers(String date) throws ParseException {
         availableOfficers.clear();
-        availableOfficers.addAll(DeliveryOfficer.getAllStaffList());
+        availableOfficers.addAll(Staff.getAllStaffList());
         for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
             DateTime eventDate = event.getDateOfEvent();
             if (Validation.convertDateTimeToUKFormat(eventDate).equals(date)) {
-                for (DeliveryOfficer deliveryOfficer : event.getListOfDeliveryOfficers()) {
-                    for (DeliveryOfficer availableOfficer : new ArrayList<>(availableOfficers)) {
-                        if (deliveryOfficer.getName().equals(availableOfficer.getName())) {
+                for (Staff staff : event.getListOfStaff()) {
+                    for (Staff availableOfficer : new ArrayList<>(availableOfficers)) {
+                        if (staff.getName().equals(availableOfficer.getName())) {
                             availableOfficers.remove(availableOfficer);
                         }
                     }
@@ -488,11 +504,13 @@ public class DeliveryOfficer {
             }
         }
         System.out.println("Available Officers: | Events that Week | Events Compared to Average for -2 weeks + 2 weeks");
-        for (DeliveryOfficer deliveryOfficer : availableOfficers) {
-            System.out.printf("%-25s\t %-15s %20s", deliveryOfficer.getName(),
-                    getNumberOfEventsForWeek(deliveryOfficer.getName(), date),
-                    deliveryOfficer.getEventsComparedToAverageForMonth(deliveryOfficer.getName(), date));
-            System.out.println();
+        for (Staff staff : availableOfficers) {
+            if(staff.isDeliveryOfficer()) {
+                System.out.printf("%-25s\t %-15s %20s", staff.getName(),
+                        getNumberOfEventsForWeek(staff.getName(), date),
+                        staff.getEventsComparedToAverageForMonth(staff.getName(), date));
+                System.out.println();
+            }
         }
         System.out.println();
         recommendOfficerForWorkshop(date);
@@ -513,7 +531,8 @@ public class DeliveryOfficer {
             String email = line.get(1).trim();
             int teachingCommitment = Integer.parseInt(line.get(2).trim());
             boolean adminPrivileges = Boolean.parseBoolean(line.get(3).trim());
-            addNewStaffMember(name, email, teachingCommitment, adminPrivileges);
+            boolean isDeliveryOfficer = Boolean.parseBoolean(line.get(4).trim());
+            addNewStaffMember(name, email, teachingCommitment, adminPrivileges, isDeliveryOfficer);
         }
     }
 
@@ -522,9 +541,9 @@ public class DeliveryOfficer {
      */
     public static void printAllStaff() {
         System.out.println("Current Staff:");
-        for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-            System.out.print(deliveryOfficer.getUniqueStaffNumber() + ")\t");
-            deliveryOfficer.displayName();
+        for (Staff staff : Staff.getAllStaffList()) {
+            System.out.print(staff.getUniqueStaffNumber() + ")\t");
+            staff.displayName();
         }
     }
 
@@ -538,15 +557,15 @@ public class DeliveryOfficer {
         boolean officerFound = false;
         try {
             int numberEntered = Integer.parseInt(name);
-            for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-                if (deliveryOfficer.getUniqueStaffNumber() == numberEntered) {
+            for (Staff staff : Staff.getAllStaffList()) {
+                if (staff.getUniqueStaffNumber() == numberEntered) {
                     officerFound = true;
                     break;
                 }
             }
             return officerFound;
         } catch (NumberFormatException e) {
-            for (DeliveryOfficer deliveryofficer : DeliveryOfficer.getAllStaffList()) {
+            for (Staff deliveryofficer : Staff.getAllStaffList()) {
                 if (deliveryofficer.getName().toUpperCase().equals(name.toUpperCase())) {
                     officerFound = true;
                     break;
@@ -562,23 +581,23 @@ public class DeliveryOfficer {
      * @param name String containing a name to search for dfelivery officer.
      * @return DeliveryOfficer object searched for.
      */
-    public static DeliveryOfficer findStaffMember(String name) {
+    public static Staff findStaffMember(String name) {
         try {
             int numberEntered = Integer.parseInt(name);
-            DeliveryOfficer chosenOfficer = null;
-            for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-                if (deliveryOfficer.getUniqueStaffNumber() == numberEntered) {
-                    chosenOfficer = deliveryOfficer;
+            Staff chosenOfficer = null;
+            for (Staff staff : Staff.getAllStaffList()) {
+                if (staff.getUniqueStaffNumber() == numberEntered) {
+                    chosenOfficer = staff;
                     break;
                 }
             }
             return chosenOfficer;
 
         } catch (NumberFormatException e) {
-            DeliveryOfficer chosenOfficer = null;
-            for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-                if (deliveryOfficer.getName().toUpperCase().equals(name.toUpperCase())) {
-                    chosenOfficer = deliveryOfficer;
+            Staff chosenOfficer = null;
+            for (Staff staff : Staff.getAllStaffList()) {
+                if (staff.getName().toUpperCase().equals(name.toUpperCase())) {
+                    chosenOfficer = staff;
                     break;
                 }
             }
@@ -595,11 +614,11 @@ public class DeliveryOfficer {
      * @param adminPrivileges a boolean containing staff member's admin privileges.
      * @throws IOException if issues with writing to staff details text file.
      */
-    public static void addNewStaffMember(String fullName, String email, int timeCommitment, boolean adminPrivileges) throws IOException {
-        DeliveryOfficer.getAllStaffList().add(new DeliveryOfficer(fullName, email, timeCommitment, adminPrivileges));
-        allStaff.sort(Comparator.comparing(DeliveryOfficer::getName)); //Sorts Delivery Officers by name.
+    public static void addNewStaffMember(String fullName, String email, int timeCommitment, boolean adminPrivileges, boolean isDeliveryOfficer) throws IOException {
+        Staff.getAllStaffList().add(new Staff(fullName, email, timeCommitment, adminPrivileges, isDeliveryOfficer));
+        allStaff.sort(Comparator.comparing(Staff::getName)); //Sorts Delivery Officers by name.
         staffNumber = 1;
-        for (DeliveryOfficer officer : allStaff) {
+        for (Staff officer : allStaff) {
             officer.setUniqueStaffNumber(staffNumber);
             staffNumber++;
         }
@@ -612,11 +631,11 @@ public class DeliveryOfficer {
      * @param officerToDelete A DeliveryOfficer object to be removed.
      * @throws IOException if issues with writing to staff details text file.
      */
-    public static void removeStaffMember(DeliveryOfficer officerToDelete) throws IOException {
-        DeliveryOfficer.getAllStaffList().remove(officerToDelete);
-        allStaff.sort(Comparator.comparing(DeliveryOfficer::getName)); //Sorts Delivery Officers by name.
+    public static void removeStaffMember(Staff officerToDelete) throws IOException {
+        Staff.getAllStaffList().remove(officerToDelete);
+        allStaff.sort(Comparator.comparing(Staff::getName)); //Sorts Delivery Officers by name.
         staffNumber = 1;
-        for (DeliveryOfficer officer : allStaff) {
+        for (Staff officer : allStaff) {
             officer.setUniqueStaffNumber(staffNumber);
             staffNumber++;
         }
@@ -631,9 +650,9 @@ public class DeliveryOfficer {
      * @throws ParseException if dates are incorrectly formatted.
      */
     public static void printStaffEventLists(String name, String startDate) throws ParseException {
-        for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-            if (deliveryOfficer.getName().toUpperCase().equals(name.toUpperCase())) {
-                deliveryOfficer.printOfficerEvents(name, startDate);
+        for (Staff staff : Staff.getAllStaffList()) {
+            if (staff.getName().toUpperCase().equals(name.toUpperCase())) {
+                staff.printOfficerEvents(name, startDate);
                 break;
             }
         }
@@ -649,9 +668,9 @@ public class DeliveryOfficer {
      * @throws ParseException if dates are incorrectly formatted.
      */
     public static void printStaffEventLists(String name, String startDate, String endDate) throws ParseException {
-        for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-            if (deliveryOfficer.getName().toUpperCase().equals(name.toUpperCase())) {
-                deliveryOfficer.printOfficerEvents(name, startDate, endDate);
+        for (Staff staff : Staff.getAllStaffList()) {
+            if (staff.getName().toUpperCase().equals(name.toUpperCase())) {
+                staff.printOfficerEvents(name, startDate, endDate);
                 break;
             }
         }
@@ -666,9 +685,11 @@ public class DeliveryOfficer {
         String startDate = Validation.convertDateTimeToUKFormat(Main.getStartingDate());
         System.out.println("All past and future Events Since: " + startDate);
         System.out.println("Delivery Officer  |  Number Of Events  | Recommended number of events for period:");
-        for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-            deliveryOfficer.printOfficerNumberOfEvents();
-            System.out.println();
+        for (Staff staff : Staff.getAllStaffList()) {
+            if (staff.isDeliveryOfficer()) {
+                staff.printOfficerNumberOfEvents();
+                System.out.println();
+            }
         }
     }
 
@@ -681,9 +702,11 @@ public class DeliveryOfficer {
     public static void printStaffNumberOfEvents(String startDate) throws ParseException {
         System.out.println("Future Events from " + startDate);
         System.out.println("Delivery Officer  |  Number Of Events  | Recommended number of events for period:");
-        for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-            deliveryOfficer.printOfficerNumberOfEvents(startDate);
-            System.out.println();
+        for (Staff staff : Staff.getAllStaffList()) {
+            if (staff.isDeliveryOfficer()) {
+                staff.printOfficerNumberOfEvents(startDate);
+                System.out.println();
+            }
         }
     }
 
@@ -697,11 +720,12 @@ public class DeliveryOfficer {
     public static void printStaffNumberOfEvents(String startDate, String endDate) throws ParseException {
         System.out.println("Events Between: " + startDate + " - " + endDate);
         System.out.println("Delivery Officer  |  Number Of Events  | Recommended number of events for period:");
-        for (DeliveryOfficer deliveryOfficer : DeliveryOfficer.getAllStaffList()) {
-            deliveryOfficer.printOfficerNumberOfEvents(startDate, endDate);
-            System.out.println();
+        for (Staff staff : Staff.getAllStaffList()) {
+            if (staff.isDeliveryOfficer()) {
+                staff.printOfficerNumberOfEvents(startDate, endDate);
+                System.out.println();
+            }
         }
-
     }
 
     /**
@@ -713,9 +737,9 @@ public class DeliveryOfficer {
         FileWriter outputToFile = new FileWriter
                 ("/Users/lukeclement/ownCloud/Luke_Clement/DA/Programming 2/CalendarTesting/src/Staff.txt");
         int counter = 0;
-        for (DeliveryOfficer officer : allStaff) {
+        for (Staff officer : allStaff) {
             outputToFile.write(officer.getName() + ", " + officer.getEmail() + ", " + officer.getTimeCommitment()
-                    + ", " + officer.getAdminPrivileges());
+                    + ", " + officer.getAdminPrivileges() + ", " + officer.isDeliveryOfficer());
             counter++;
             if (counter != allStaff.size()) {
                 outputToFile.write("\n");
@@ -731,7 +755,7 @@ public class DeliveryOfficer {
      */
     public static int getAdministratorsCount() {
         int counter = 0;
-        for (DeliveryOfficer staff : allStaff) {
+        for (Staff staff : allStaff) {
             if (staff.getAdminPrivileges()) {
                 counter++;
             }
@@ -769,7 +793,7 @@ public class DeliveryOfficer {
      * @return number of events for the delivery officer that week.
      * @throws ParseException if date is formatted incorrectly.
      */
-    public static int getNumberOfEventsForWeek(DeliveryOfficer d, String date) throws ParseException {
+    public static int getNumberOfEventsForWeek(Staff d, String date) throws ParseException {
         if (Validation.isValidDate(date)) {
             String formattedDate = date.substring(6) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
             LocalDate dateOfWeek = LocalDate.parse(formattedDate);
@@ -826,12 +850,12 @@ public class DeliveryOfficer {
      * events of 100% delivery officers for the surrounding month. Returns a value based off the comparison which
      * is scaled based of the time commitment of the delivery officer.
      *
-     * @param d a delivery officer object.
+     * @param s a Staff object.
      * @param date date in the format (dd/mm/yyyy).
      * @return a value comparing number of events for the week
      * @throws ParseException if date is formatted incorrectly.
      */
-    public double getEventsComparedToAverageForMonth(DeliveryOfficer d, String date) throws ParseException {
+    public double getEventsComparedToAverageForMonth(Staff s, String date) throws ParseException {
         double comparedToAverage = 0.0;
         if (Validation.isValidDate(date)) {
             String formattedDate = date.substring(6) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
@@ -848,7 +872,7 @@ public class DeliveryOfficer {
                 String mondayDate = Validation.convertLocalDateToUKFormat(monday);
                 String sundayDate = Validation.convertLocalDateToUKFormat(sunday);
                 double average = (averageOfficerNumberOfEvents(mondayDate, sundayDate)) * (getTimeCommitment()/100.0);
-                comparedToAverage = d.getOfficerNumberOfEvents(mondayDate, sundayDate) - average;
+                comparedToAverage = s.getOfficerNumberOfEvents(mondayDate, sundayDate) - average;
 
             } else {
                 System.out.println("Date is null.");
@@ -868,17 +892,19 @@ public class DeliveryOfficer {
      * @throws ParseException if date incorrectly formatted.
      */
     public static void recommendOfficerForWorkshop(String date) throws ParseException {
-        DeliveryOfficer leastEvents = getAllStaffList().get(0);
+        Staff leastEvents = getAllStaffList().get(0);
         double currentEvents;
         double smallest = getAllStaffList().get(0).getOfficerNumberOfEvents(date);
-        for (DeliveryOfficer d : allStaff) {
-            currentEvents = getNumberOfEventsForWeek(d, date);
-            if (smallest > currentEvents) {
-                smallest = currentEvents;
-                leastEvents = d;
-            } else if (smallest == currentEvents) {
-                if (d.getEventsComparedToAverageForMonth(d, date) < leastEvents.getEventsComparedToAverageForMonth(d, date))
-                    leastEvents = d;
+        for (Staff s : allStaff) {
+            if (s.isDeliveryOfficer()) {
+                currentEvents = getNumberOfEventsForWeek(s, date);
+                if (smallest > currentEvents) {
+                    smallest = currentEvents;
+                    leastEvents = s;
+                } else if (smallest == currentEvents) {
+                    if (s.getEventsComparedToAverageForMonth(s, date) < leastEvents.getEventsComparedToAverageForMonth(s, date))
+                        leastEvents = s;
+                }
             }
         }
         System.out.println("Recommended Officer | Events that Week | Compared to Average for Surrounding Month");
