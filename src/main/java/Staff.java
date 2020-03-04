@@ -499,6 +499,9 @@ public class Staff {
                         if (staff.getName().equals(availableOfficer.getName())) {
                             availableOfficers.remove(availableOfficer);
                         }
+                        if (!availableOfficer.isDeliveryOfficer()) {
+                            availableOfficers.remove(availableOfficer);
+                        }
                     }
                 }
             }
@@ -513,7 +516,7 @@ public class Staff {
             }
         }
         System.out.println();
-        recommendOfficerForWorkshop(date);
+        recommendOfficerForWorkshop(date, availableOfficers);
     }
 
     /**
@@ -884,33 +887,43 @@ public class Staff {
     }
 
     /**
-     * Recommends a deliveryOfficer for a workshop based on the number of events that week. If two or more delivery
+     * Recommends delivery officers for a workshop based on the number of events that week. If two or more delivery
      * Officers have the same amount of events that week, then their monthly number compared to the average is
-     * considered.
+     * considered, if everything is equal it recommends multiple officers to pick from.
      *
      * @param date date in the format (dd/mm/yyyy).
      * @throws ParseException if date incorrectly formatted.
      */
-    public static void recommendOfficerForWorkshop(String date) throws ParseException {
-        Staff leastEvents = getAllStaffList().get(0);
+    public static void recommendOfficerForWorkshop(String date, ArrayList<Staff> available) throws ParseException {
+        ArrayList<Staff> recommendedOfficers = new ArrayList<>();
+        Staff leastEvents = available.get(0);
         double currentEvents;
-        double smallest = getAllStaffList().get(0).getOfficerNumberOfEvents(date);
-        for (Staff s : allStaff) {
+        double smallest = getNumberOfEventsForWeek(leastEvents, date);
+        for (Staff s : available) {
             if (s.isDeliveryOfficer()) {
                 currentEvents = getNumberOfEventsForWeek(s, date);
                 if (smallest > currentEvents) {
                     smallest = currentEvents;
                     leastEvents = s;
+                    recommendedOfficers.clear();
+                    recommendedOfficers.add(leastEvents);
+
                 } else if (smallest == currentEvents) {
-                    if (s.getEventsComparedToAverageForMonth(s, date) < leastEvents.getEventsComparedToAverageForMonth(s, date))
-                        leastEvents = s;
+                    if (s.getEventsComparedToAverageForMonth(s, date) < leastEvents.getEventsComparedToAverageForMonth(leastEvents, date)) {
+                        recommendedOfficers.clear();
+                        recommendedOfficers.add(s);
+                    } else if (s.getEventsComparedToAverageForMonth(s, date) == leastEvents.getEventsComparedToAverageForMonth(leastEvents, date)) {
+                        recommendedOfficers.add(s);
+                    }
                 }
             }
         }
-        System.out.println("Recommended Officer | Events that Week | Compared to Average for Surrounding Month");
-        System.out.printf("%-25s\t %-15s %20s", leastEvents.getName(),
-                getNumberOfEventsForWeek(leastEvents.getName(), date),
-                leastEvents.getEventsComparedToAverageForMonth(leastEvents.getName(), date));
+        System.out.println("Recommended Officer | Events that Week | Compared to Average for -2 weeks + 2 weeks");
+        for (Staff recommended : recommendedOfficers) {
+            System.out.printf("%-25s\t %-15s %20s\n", recommended.getName(),
+                    getNumberOfEventsForWeek(recommended.getName(), date),
+                    leastEvents.getEventsComparedToAverageForMonth(recommended.getName(), date));
+        }
     }
 }
 
