@@ -1,10 +1,13 @@
 import com.google.api.client.util.DateTime;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
 
 public class Main {
 
@@ -28,12 +31,12 @@ public class Main {
      * @throws IOException              if text file of Staff member details does not exist.
      * @throws GeneralSecurityException if issue with Google Calendar API credentials.
      */
-    public static void main(String... args) throws IOException, GeneralSecurityException, ParseException {
+    public static void main(String... args) throws IOException, GeneralSecurityException {
         //test();
 
         Staff.populateStaffList();
         CalendarQuickstart.getEventsFromCalendar(startingDate, calendarEmail);
-        for(Staff staff : Staff.getAllStaffList()) {
+        for (Staff staff : Staff.getAllStaffList()) {
             CalendarQuickstart.getIndividualUnavailability(getStartingDate(), staff, staff.getEmail());
         }
         System.out.println();
@@ -63,7 +66,7 @@ public class Main {
     /**
      * This method is used for testing individual methods when needed.
      */
-    private static void test() throws ParseException, IOException, GeneralSecurityException {
+    private static void test() throws IOException {
         Staff.populateStaffList();
 
         userInterface();

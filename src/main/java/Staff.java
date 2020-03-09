@@ -1,16 +1,14 @@
 import com.google.api.client.util.DateTime;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import static java.time.temporal.TemporalAdjusters.nextOrSame;
-import static java.time.temporal.TemporalAdjusters.previousOrSame;
-import static java.time.temporal.TemporalAdjusters.previous;
-import static java.time.temporal.TemporalAdjusters.next;
-
 import java.util.*;
+
+import static java.time.temporal.TemporalAdjusters.*;
 
 public class Staff {
 
@@ -393,7 +391,6 @@ public class Staff {
      * Gets the officer number of all events since the calendar starting date.
      *
      * @return an int of the number of events for the delivery officer.
-     * @throws ParseException when date entered isn't formatted correctly.
      */
     private int getOfficerNumberOfEvents() {
         double counter = 0.0;

@@ -1,3 +1,5 @@
+import com.google.api.client.util.DateTime;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -5,22 +7,21 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-import com.google.api.client.util.DateTime;
 
 public class TechnocampsEvent {
 
     private static final ArrayList<TechnocampsEvent> allEvents = new ArrayList<>();
 
-    private String uniqueID;
+    private final String uniqueID;
     private DateTime dateOfEvent;
-    private DateTime startTime;
-    private DateTime endTime;
-    private String universityCode;
-    private String eventType;
-    private String schoolName;
-    private String keyStage;
-    private String workshop;
-    private ArrayList<Staff> listOfStaff;
+    private final DateTime startTime;
+    private final DateTime endTime;
+    private final String universityCode;
+    private final String eventType;
+    private final String schoolName;
+    private final String keyStage;
+    private final String workshop;
+    private final ArrayList<Staff> listOfStaff;
 
 
     /**
@@ -39,8 +40,7 @@ public class TechnocampsEvent {
     public TechnocampsEvent(String uniqueID, DateTime dateOfEvent, DateTime startTime, DateTime endTime,
                             String universityCode, String eventType,
                             String schoolName, String keyStage, String workshop,
-                            ArrayList<Staff> listOfStaff)
-    {
+                            ArrayList<Staff> listOfStaff) {
         this.dateOfEvent = dateOfEvent;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -76,7 +76,6 @@ public class TechnocampsEvent {
     }
 
 
-
     /**
      * Prints a string containing the details of the event to the console. It is used when a specific
      * delivery officer is named.
@@ -96,15 +95,15 @@ public class TechnocampsEvent {
     }
 
     public static void printAllEvents() {
-            for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
-                if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub")
-                        || event.getEventType().equals("Technoteach") || event.getEventType().equals("AL")
-                        || event.getEventType().equals("Unavailable")) {
-                            event.printEventDetails();
-                        }
-
-                }
+        for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
+            if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub")
+                    || event.getEventType().equals("Technoteach") || event.getEventType().equals("AL")
+                    || event.getEventType().equals("Unavailable")) {
+                event.printEventDetails();
             }
+
+        }
+    }
 
     public static void printAllEvents(String startDate) throws ParseException {
         System.out.println();
@@ -123,8 +122,8 @@ public class TechnocampsEvent {
                         eventDate.substring(5, 7) + "/" + eventDate.substring(0, 4));
                 if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub") ||
                         event.getEventType().equals("Technoteach")) {
-                        if (firstSearchDate.compareTo(eventDateFormatted) <= 0) {
-                            event.printEventDetails();
+                    if (firstSearchDate.compareTo(eventDateFormatted) <= 0) {
+                        event.printEventDetails();
                     }
                 }
             }
@@ -194,7 +193,7 @@ public class TechnocampsEvent {
         }
         if (officerFound) {
             System.out.println("Officer already assigned to event.");
-            }else {
+        }else {
 
             for (Staff staff : Staff.getAllStaffList()) {
                 if (staff.getName().equals(name)) {
@@ -202,7 +201,7 @@ public class TechnocampsEvent {
                     officerFound = true;
                 }
             }
-            if (officerFound == false) {
+            if (!officerFound) {
                 System.out.println("No member of staff by that name exists.");
             }
         }

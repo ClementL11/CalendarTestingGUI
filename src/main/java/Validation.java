@@ -1,4 +1,5 @@
 import com.google.api.client.util.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -65,15 +66,14 @@ public class Validation {
      * Checks if an input date is valid. If not it throws an exception.
      *
      * @param date a String of a date which should be as dd/MM/yyyy
-     * @throws ParseException if date incorrectly formatted.
      */
-    public static boolean isValidDate(String date) throws ParseException {
+    public static boolean isValidDate(String date) {
         try {
             DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             format.setLenient(false);
             format.parse(date);
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
