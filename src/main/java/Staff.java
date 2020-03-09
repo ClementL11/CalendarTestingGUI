@@ -240,7 +240,8 @@ public class Staff {
         } else {
             for (TechnocampsEvent event : getAllEvents(name, startDate)) {
                 String eventType = event.getEventType();
-                if (eventType.equals("Workshop") || eventType.equals("Technoclub") || eventType.equals("Technoteach")) {
+                if (eventType.equals("Workshop") || eventType.equals("Technoclub") || eventType.equals("Technoteach")
+                        || eventType.equals("AL") || eventType.equals("Unavailable")) {
                     event.printOfficerEventDetails();
                 }
             }
@@ -263,7 +264,8 @@ public class Staff {
         } else {
             for (TechnocampsEvent event : getAllEvents(name, startDate, endDate)) {
                 String eventType = event.getEventType();
-                if (eventType.equals("Workshop") || eventType.equals("Technoclub") || eventType.equals("Technoteach")) {
+                if (eventType.equals("Workshop") || eventType.equals("Technoclub") || eventType.equals("Technoteach") || eventType.equals("AL")
+                        || eventType.equals("Unavailable")) {
                     event.printOfficerEventDetails();
                 }
             }
@@ -912,6 +914,7 @@ public class Staff {
                     if (s.getEventsComparedToAverageForMonth(s, date) < leastEvents.getEventsComparedToAverageForMonth(leastEvents, date)) {
                         recommendedOfficers.clear();
                         recommendedOfficers.add(s);
+                        leastEvents = s;
                     } else if (s.getEventsComparedToAverageForMonth(s, date) == leastEvents.getEventsComparedToAverageForMonth(leastEvents, date)) {
                         recommendedOfficers.add(s);
                     }

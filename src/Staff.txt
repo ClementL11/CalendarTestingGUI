@@ -1,8 +1,8 @@
 Alex Wing, alex.wing@technocamps.com, 100, false, true
 Casey Denner, casey.denner@technocamps.com, 50, false, true
-Jack Roberts, jack.roberts@technocamps.com, 50, false, true
+Jack Roberts, jack.roberts@technocamps.com, 100, false, true
 Joanne Ralph, joanne.ralph@technocamps.com, 0, true, false
-Lauren Powell, lauren.powell@technocamps.com, 100, false, true
+Lauren Powell, lauren.powell@technocamps.com, 50, false, true
 Luke Clement, luke.clement@technocamps.com, 100, false, true
 Luke von Sicard, luke.vonsicard@technocamps.com, 100, false, true
 Rama Vaidhiyanathan, ramalakshmi.vaidhiyanathan@technocamps.com, 50, false, true

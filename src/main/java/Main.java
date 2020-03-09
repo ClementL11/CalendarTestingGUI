@@ -4,9 +4,7 @@ import java.security.GeneralSecurityException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -35,6 +33,9 @@ public class Main {
 
         Staff.populateStaffList();
         CalendarQuickstart.getEventsFromCalendar(startingDate, calendarEmail);
+        for(Staff staff : Staff.getAllStaffList()) {
+            CalendarQuickstart.getIndividualUnavailability(getStartingDate(), staff, staff.getEmail());
+        }
         System.out.println();
         userInterface();
     }
@@ -52,12 +53,8 @@ public class Main {
                 memberExists = false;
                 System.out.println("\nNot a valid choice!\n");
             } else {
-                try {
-
                     mainMenu(user, user.getAdminPrivileges());
-                } catch (Exception e) {
-                    System.out.println("Error in main menu code!");
-                }
+
             }
         } while (!memberExists);
 
@@ -66,8 +63,15 @@ public class Main {
     /**
      * This method is used for testing individual methods when needed.
      */
-    private static void test() throws ParseException {
-        Staff.getNumberOfEventsForWeek("Luke Clement", "29/03/2020");
+    private static void test() throws ParseException, IOException, GeneralSecurityException {
+        Staff.populateStaffList();
+
+        userInterface();
+
+        for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
+            System.out.println(event.toString());
+        }
+
 
     }
 

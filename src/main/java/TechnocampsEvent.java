@@ -20,7 +20,7 @@ public class TechnocampsEvent {
     private String schoolName;
     private String keyStage;
     private String workshop;
-    private ArrayList<Staff> listOfStaffs;
+    private ArrayList<Staff> listOfStaff;
 
 
     /**
@@ -34,12 +34,12 @@ public class TechnocampsEvent {
      * @param schoolName a String containing the name of the school.
      * @param keyStage a String containing the key stage of the class
      * @param workshop a string containing the name of the workshop to be delivered.
-     * @param listOfStaffs an Arraylist containing Delivery Officers assigned to the event.
+     * @param listOfStaff an Arraylist containing Delivery Officers assigned to the event.
      */
     public TechnocampsEvent(String uniqueID, DateTime dateOfEvent, DateTime startTime, DateTime endTime,
                             String universityCode, String eventType,
                             String schoolName, String keyStage, String workshop,
-                            ArrayList<Staff> listOfStaffs)
+                            ArrayList<Staff> listOfStaff)
     {
         this.dateOfEvent = dateOfEvent;
         this.startTime = startTime;
@@ -49,7 +49,7 @@ public class TechnocampsEvent {
         this.schoolName = schoolName;
         this.keyStage = keyStage;
         this.workshop = workshop;
-        this.listOfStaffs = listOfStaffs;
+        this.listOfStaff = listOfStaff;
         this.uniqueID = uniqueID;
     }
 
@@ -58,12 +58,18 @@ public class TechnocampsEvent {
      * delivery officer is not specified and displays a list of all the delivery officers assigned to the event object.
      */
     public void printEventDetails() {
-        System.out.println(Validation.convertDateTimeToUKFormat(dateOfEvent) +
-                " | " + startTime.toStringRfc3339().split("T")[1].substring(0, 5) + " - " +
-                endTime.toStringRfc3339().split("T")[1].substring(0, 5) + " | " + eventType
-                + " | " + schoolName + " | " + keyStage + " | " + workshop);
+        if (startTime.isDateOnly()) {
+            System.out.println(Validation.convertDateTimeToUKFormat(dateOfEvent) +
+                    " | " + "   All Day   " + " | " + eventType + " | " + schoolName + " | "
+                    + keyStage + " | " + workshop);
+        } else {
+            System.out.println(Validation.convertDateTimeToUKFormat(dateOfEvent) +
+                    " | " + startTime.toStringRfc3339().split("T")[1].substring(0, 5) + " - " +
+                    endTime.toStringRfc3339().split("T")[1].substring(0, 5) + " | " + eventType
+                    + " | " + schoolName + " | " + keyStage + " | " + workshop);
+        }
         System.out.println("Delivery Officers Assigned:");
-        for (Staff staff : listOfStaffs) {
+        for (Staff staff : listOfStaff) {
             System.out.println(staff.getName());
         }
         System.out.println();
@@ -76,16 +82,24 @@ public class TechnocampsEvent {
      * delivery officer is named.
      */
     public void printOfficerEventDetails() {
-        System.out.println(Validation.convertDateTimeToUKFormat(dateOfEvent) +
-                " | " + startTime.toStringRfc3339().split("T")[1].substring(0, 5) + " - " +
-                endTime.toStringRfc3339().split("T")[1].substring(0, 5) + " | " + eventType
-                + " | " + schoolName + " | " + keyStage + " | " + workshop);
+        if (startTime.isDateOnly()) {
+            System.out.println(Validation.convertDateTimeToUKFormat(dateOfEvent) +
+                    " | " + "   All Day   " + " | " + eventType + " | " + schoolName + " | "
+                    + keyStage + " | " + workshop);
+        } else {
+            System.out.println(Validation.convertDateTimeToUKFormat(dateOfEvent) +
+                    " | " + startTime.toStringRfc3339().split("T")[1].substring(0, 5) + " - " +
+                    endTime.toStringRfc3339().split("T")[1].substring(0, 5) + " | " + eventType
+                    + " | " + schoolName + " | " + keyStage + " | " + workshop);
+        }
+
     }
 
     public static void printAllEvents() {
             for (TechnocampsEvent event : TechnocampsEvent.getAllEvents()) {
-                if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub") ||
-                        event.getEventType().equals("Technoteach")) {
+                if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub")
+                        || event.getEventType().equals("Technoteach") || event.getEventType().equals("AL")
+                        || event.getEventType().equals("Unavailable")) {
                             event.printEventDetails();
                         }
 
@@ -320,7 +334,7 @@ public class TechnocampsEvent {
      * @return An ArrayList of Delivery officers.
      */
     public ArrayList<Staff> getListOfStaff() {
-        return listOfStaffs;
+        return listOfStaff;
     }
 
     public static ArrayList<TechnocampsEvent> getAllEvents() {
@@ -425,5 +439,20 @@ public class TechnocampsEvent {
         return searchDates;
     }
 
+    @Override
+    public String toString() {
+        return "TechnocampsEvent{" +
+                //"uniqueID='" + uniqueID + '\'' +
+                ", dateOfEvent=" + dateOfEvent +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", universityCode='" + universityCode + '\'' +
+                ", eventType='" + eventType + '\'' +
+                ", schoolName='" + schoolName + '\'' +
+                ", keyStage='" + keyStage + '\'' +
+                ", workshop='" + workshop + '\'' +
+                ", listOfStaff=" + listOfStaff +
+                '}';
+    }
 
 }
