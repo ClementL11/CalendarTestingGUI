@@ -121,7 +121,8 @@ public class TechnocampsEvent {
                 Date eventDateFormatted = format.parse(eventDate.substring(8, 10) + "/" +
                         eventDate.substring(5, 7) + "/" + eventDate.substring(0, 4));
                 if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub") ||
-                        event.getEventType().equals("Technoteach")) {
+                        event.getEventType().equals("Technoteach") || event.getEventType().equals("AL")
+                        || event.getEventType().equals("Unavailable")) {
                     if (firstSearchDate.compareTo(eventDateFormatted) <= 0) {
                         event.printEventDetails();
                     }
@@ -160,7 +161,8 @@ public class TechnocampsEvent {
                 Date eventDateFormatted = format.parse(eventDate.substring(8, 10) + "/" +
                         eventDate.substring(5, 7) + "/" + eventDate.substring(0, 4));
                 if (event.getEventType().equals("Workshop") || event.getEventType().equals("Technoclub") ||
-                        event.getEventType().equals("Technoteach")) {
+                        event.getEventType().equals("Technoteach") || event.getEventType().equals("AL")
+                        || event.getEventType().equals("Unavailable")) {
                     if (endDate == null) {
                         if (firstSearchDate.compareTo(eventDateFormatted) <= 0) {
                             event.printEventDetails();
@@ -179,7 +181,7 @@ public class TechnocampsEvent {
 
 
     /**
-     * Assigns delivery officer objects to an event.
+     * Assigns delivery officer objects to an event. Not Implemented yet.
      *
      * @param name A string containing the name of the delivery officer to be assigned.
      */
@@ -208,7 +210,7 @@ public class TechnocampsEvent {
     }
 
     /**
-     * Removes a delivery officer from an event.
+     * Removes a delivery officer from an event. Not Implemented Yet.
      *
      * @param name a String containing the name of a delivery officer.
      */
