@@ -93,47 +93,6 @@ public class CalendarQuickstart {
             if (dateOfEvent != null) {     //This ignores all-day events
                 DateTime startTime = event.getStart().getDateTime();
                 DateTime endTime = event.getEnd().getDateTime();
-                try {
-                    ArrayList<String> eventSummaryList = new ArrayList<>(Arrays.asList(event.getSummary().split(" - ")));
-                    if (eventSummaryList.size() == 4) {
-                        eventSummary = eventSummary + " - ?";
-                    } else if (eventSummaryList.size() == 3) {
-                        eventSummary = eventSummary + " - ? - ?";
-
-                    } else if (eventSummaryList.size() == 2) {
-                        eventSummary = eventSummary + " - ? - ? - ?";
-                    }
-                    ArrayList<String> eventName = new ArrayList<>(Arrays.asList(eventSummary.split(" - ")));
-                    String universityCode = eventName.get(0);
-                    if (universityCode.equals("SU")) {
-                        String eventType = eventName.get(1);
-                        String schoolName = eventName.get(2);
-                        String keyStage = eventName.get(3);
-                        String workshop = eventName.get(4);
-                        ArrayList<EventAttendee> deliveryNames = (ArrayList<EventAttendee>) event.getAttendees();
-                        ArrayList<Staff> eventStaff = new ArrayList<>();
-                        if (deliveryNames.size() > 0) {
-                            for (EventAttendee attendee : deliveryNames) {
-                                for (Staff staffMember : Staff.getAllStaffList())
-                                    if (attendee.getEmail().trim().equals(staffMember.getEmail())) {
-                                        eventStaff.add(staffMember);
-                                    }
-                            }
-                        }
-                        TechnocampsEvent.getAllEvents().add(new TechnocampsEvent(uniqueId, dateOfEvent, startTime,
-                                endTime, universityCode, eventType, schoolName, keyStage, workshop,
-                                eventStaff));
-                    }
-                } catch (Exception exception) {
-                    System.out.println("Poorly formatted event in Calendar ignored: " + eventSummary);
-                }
-            } else {
-                String startTimeString = event.getStart().getDate().toStringRfc3339();
-                DateTime startTime = DateTime.parseRfc3339(startTimeString);
-                dateOfEvent = startTime;
-                String endTimeString = event.getEnd().getDate().toStringRfc3339();
-                DateTime endTime = DateTime.parseRfc3339(endTimeString);
-                try {
                 ArrayList<String> eventSummaryList = new ArrayList<>(Arrays.asList(event.getSummary().split(" - ")));
                 if (eventSummaryList.size() == 4) {
                     eventSummary = eventSummary + " - ?";
@@ -152,7 +111,7 @@ public class CalendarQuickstart {
                     String workshop = eventName.get(4);
                     ArrayList<EventAttendee> deliveryNames = (ArrayList<EventAttendee>) event.getAttendees();
                     ArrayList<Staff> eventStaff = new ArrayList<>();
-                    if (deliveryNames.size() > 0) {
+                    if (deliveryNames != null) {
                         for (EventAttendee attendee : deliveryNames) {
                             for (Staff staffMember : Staff.getAllStaffList())
                                 if (attendee.getEmail().trim().equals(staffMember.getEmail())) {
@@ -164,11 +123,42 @@ public class CalendarQuickstart {
                             endTime, universityCode, eventType, schoolName, keyStage, workshop,
                             eventStaff));
                 }
-            } catch (Exception exception) {
-                System.out.println("Poorly formatted event in Calendar ignored: " + eventSummary);
-            }
+            } else {
+                String startTimeString = event.getStart().getDate().toStringRfc3339();
+                DateTime startTime = DateTime.parseRfc3339(startTimeString);
+                dateOfEvent = startTime;
+                String endTimeString = event.getEnd().getDate().toStringRfc3339();
+                DateTime endTime = DateTime.parseRfc3339(endTimeString);
+                ArrayList<String> eventSummaryList = new ArrayList<>(Arrays.asList(event.getSummary().split(" - ")));
+                if (eventSummaryList.size() == 4) {
+                    eventSummary = eventSummary + " - ?";
+                } else if (eventSummaryList.size() == 3) {
+                    eventSummary = eventSummary + " - ? - ?";
 
-
+                } else if (eventSummaryList.size() == 2) {
+                    eventSummary = eventSummary + " - ? - ? - ?";
+                }
+                ArrayList<String> eventName = new ArrayList<>(Arrays.asList(eventSummary.split(" - ")));
+                String universityCode = eventName.get(0);
+                if (universityCode.equals("SU")) {
+                    String eventType = eventName.get(1);
+                    String schoolName = eventName.get(2);
+                    String keyStage = eventName.get(3);
+                    String workshop = eventName.get(4);
+                    ArrayList<EventAttendee> deliveryNames = (ArrayList<EventAttendee>) event.getAttendees();
+                    ArrayList<Staff> eventStaff = new ArrayList<>();
+                    if (deliveryNames != null) {
+                        for (EventAttendee attendee : deliveryNames) {
+                            for (Staff staffMember : Staff.getAllStaffList())
+                                if (attendee.getEmail().trim().equals(staffMember.getEmail())) {
+                                    eventStaff.add(staffMember);
+                                }
+                        }
+                    }
+                    TechnocampsEvent.getAllEvents().add(new TechnocampsEvent(uniqueId, dateOfEvent, startTime,
+                            endTime, universityCode, eventType, schoolName, keyStage, workshop,
+                            eventStaff));
+                }
             }
         }
     }
