@@ -459,8 +459,8 @@ public class Main {
                 validName = false;
             }
         } while (!validName);
-        System.out.print("Chosen Staff Member: " + chosenStaffMemberName);
         Staff chosenStaffMember = Staff.findStaffMember(chosenStaffMemberName);
+        System.out.print("Chosen Staff Member: " + chosenStaffMember.getName());
         System.out.print("\n*******************************************************************\n" + "Would you " +
                 "like to\n" +
                 "1) Edit Name \n" +
