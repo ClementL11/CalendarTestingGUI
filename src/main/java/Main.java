@@ -1,4 +1,9 @@
 import com.google.api.client.util.DateTime;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -9,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Main {
+public class Main extends Application {
 
     private static final DateTime startingDate = new DateTime("2019-09-01T08:00:00+00:00");
     private static final String calendarEmail = "shared@technocamps.com";
@@ -40,6 +45,7 @@ public class Main {
             CalendarQuickstart.getIndividualUnavailability(getStartingDate(), staff, staff.getEmail());
         }
         System.out.println();
+        launch(args);
         userInterface();
     }
 
@@ -630,4 +636,12 @@ public class Main {
         }
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+        Pane root = new FlowPane();
+        Scene scene = new Scene(root, 400, 400);
+
+        stage.setScene(scene);
+        stage.show();
+    }
 }
