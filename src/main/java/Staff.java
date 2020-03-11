@@ -524,8 +524,7 @@ public class Staff {
      * @throws IOException if issues with reading from staff details text file.
      */
     public static void populateStaffList() throws IOException {
-        File staffFile = new File("/Users/lukeclement/ownCloud/Luke_Clement/DA/Programming 2" +
-                "/CalendarTesting/src/Staff.txt");
+        File staffFile = new File("src/Staff.txt");
         Scanner readFile = new Scanner(staffFile);
         while (readFile.hasNextLine()) {
             ArrayList<String> line = new ArrayList<>(Arrays.asList(readFile.nextLine().split(",")));
@@ -737,7 +736,7 @@ public class Staff {
      */
     public static void updateStaffInformation() throws IOException {
         FileWriter outputToFile = new FileWriter
-                ("/Users/lukeclement/ownCloud/Luke_Clement/DA/Programming 2/CalendarTesting/src/Staff.txt");
+                ("src/Staff.txt");
         int counter = 0;
         for (Staff officer : allStaff) {
             outputToFile.write(officer.getName() + ", " + officer.getEmail() + ", " + officer.getTimeCommitment()

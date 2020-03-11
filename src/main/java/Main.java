@@ -622,6 +622,7 @@ public class Main {
                         System.out.println("You cannot delete yourself!");
                     } else {
                         Validation.confirmChoice("Delete " + officerToDelete.getName());
+                        System.out.println(officerToDelete.getName() + " successfully removed.");
                         Staff.removeStaffMember(officerToDelete);
                     }
                     break;
